@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ButtonType?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<DialogPane prefHeight="150.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+   <content>
+      <AnchorPane prefHeight="150.0" prefWidth="350.0">
+         <children>
+            <TextField fx:id="txt_nombre" layoutX="50.0" layoutY="74.0" prefWidth="250.0" />
+            <Label layoutX="50.0" layoutY="57.0" text="Nombre" />
+         </children>
+      </AnchorPane>
+   </content>
+   <buttonTypes>
+        <ButtonType fx:id="btnCancelar" buttonData="CANCEL_CLOSE" text="Cancelar" />
+        <ButtonType fx:id="btnAceptar" buttonData="OK_DONE" text="Guardar" />
+    </buttonTypes>
+</DialogPane>

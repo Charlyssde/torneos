@@ -13,15 +13,23 @@ import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 
 /**
@@ -31,18 +39,68 @@ import javafx.util.Callback;
  */
 public class EquipoController implements Initializable {
 
+    private Stage stage;
+    private Scene scene;
+    private Parent root;
+    
     @FXML
     TableView<Jugador> tbl_jugadores;
     @FXML
     TableColumn<Jugador, String> col_nombre;
     @FXML
     TableColumn<Jugador, String> col_acciones;
+    @FXML private Button btn_nuevo;
+    
+    @FXML private Label lbl_torneo;
+    @FXML private Label lbl_equipo;
+    @FXML private Label link_torneos;
+    @FXML private Label link_equipos;
 
         private ObservableList<Jugador> data = FXCollections.observableArrayList();
 
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        btn_nuevo.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent t) {
+                DialogNewElementController dialog = new DialogNewElementController(stage, "torneo");
+                dialog.showAndWait();
+            }
+        });
+        
+        link_torneos.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent t) {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("primary.fxml"));
+                    root = loader.load();
+                    stage = (Stage) ((Node) t.getSource()).getScene().getWindow();
+                    scene = new Scene(root, 800, 500);
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+        
+        link_equipos.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent t) {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
+                    root = loader.load();
+                    stage = (Stage) ((Node) t.getSource()).getScene().getWindow();
+                    scene = new Scene(root, 800, 500);
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+        
         col_nombre.setCellValueFactory(cellData -> cellData.getValue().getNombre());
 
         Callback<TableColumn<Jugador, String>, TableCell<Jugador, String>> cellFactory
@@ -83,8 +141,6 @@ public class EquipoController implements Initializable {
         populateTable();
     }
 
-    void setLabel(String value) {
-    }
 
     private void populateTable() {
         
@@ -101,4 +157,10 @@ public class EquipoController implements Initializable {
 
     private void handleGoJugador(Jugador jugador, ActionEvent event) {
     }
+    
+    public void setLabel(String text, String equipo){
+        this.lbl_torneo.setText(text);
+        this.lbl_equipo.setText(equipo);
+    }
+    
 }

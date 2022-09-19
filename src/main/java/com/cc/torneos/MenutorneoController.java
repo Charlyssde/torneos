@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -16,6 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 /**
@@ -28,7 +30,7 @@ public class MenutorneoController implements Initializable {
     private Stage stage;
     private Scene scene;
     private Parent root;
-    
+
     @FXML
     private Button btn_equipos;
     @FXML
@@ -39,19 +41,31 @@ public class MenutorneoController implements Initializable {
     private Button btn_estadisticas;
     @FXML
     private Label lbl_torneo;
+    @FXML
+    private Label link_torneos;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
         btn_equipos.setOnAction((ActionEvent t) -> {
             try {
-                handleMenuSelect("secondary", t);
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
+                root = loader.load();
+                SecondaryController controller = loader.getController();
+                controller.setLabel(lbl_torneo.getText());
+                stage = (Stage) ((Node) t.getSource()).getScene().getWindow();
+                scene = new Scene(root, 800, 500);
+                stage.setScene(scene);
+                stage.show();
+
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
         });
         btn_roles.setOnAction((ActionEvent t) -> {
             try {
+
                 handleMenuSelect("roles", t);
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -72,21 +86,29 @@ public class MenutorneoController implements Initializable {
             }
         });
 
+        link_torneos.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent t) {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("primary.fxml"));
+                    root = loader.load();
+                    stage = (Stage) ((Node) t.getSource()).getScene().getWindow();
+                    scene = new Scene(root, 800, 500);
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
     }
 
     private void handleMenuSelect(String selected, ActionEvent event) throws IOException {
-        
-        FXMLLoader loader = new FXMLLoader();
-        root = loader.load(getClass().getResource(selected + ".fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root, 800, 500);
-        stage.setScene(scene);
-        stage.show();
-        
+
     }
 
-    
-    public void setLabel(String text){
+    public void setLabel(String text) {
         this.lbl_torneo.setText(text);
     }
 }

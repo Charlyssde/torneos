@@ -6,25 +6,21 @@ package com.cc.torneos;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ListView;
 
 /**
  * FXML Controller class
  *
- * @author Carlos Carrillo
+ * @author cjcarrillo
  */
-public class RolesController implements Initializable {
+public class MenuEstadisticasController implements Initializable {
 
-    @FXML private ListView list_partidos;
-    
+    /**
+     * Initializes the controller class.
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+        // TODO
     }    
-    
     
 }
