@@ -1,9 +1,13 @@
 package com.cc.torneos;
 
+import com.cc.torneos.db.controller.TorneoController;
 import com.cc.torneos.modelos.Torneo;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -50,6 +54,7 @@ public class PrimaryController implements Initializable {
             public void handle(ActionEvent t) {
                 DialogNewElementController dialog = new DialogNewElementController(stage, "torneo");
                 dialog.showAndWait();
+                populateTable();
             }
         });
         
@@ -98,15 +103,13 @@ public class PrimaryController implements Initializable {
     }
 
     private void populateTable() {
-
-        data.add(new Torneo("Torneo 1"));
-        data.add(new Torneo("Torneo 2"));
-        data.add(new Torneo("Torneo 3"));
-        data.add(new Torneo("Torneo 4"));
-        data.add(new Torneo("Torneo 5"));
-        data.add(new Torneo("Torneo 6"));
-
-        tbl_torneos.setItems(data);
+        data.clear();
+        try {
+            data.addAll(TorneoController.getAllTorneos());
+            tbl_torneos.setItems(data);
+        } catch (SQLException ex) {
+            Logger.getLogger(PrimaryController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
@@ -115,6 +118,7 @@ public class PrimaryController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("menutorneo.fxml"));
         root = loader.load();
         MenutorneoController controller = loader.getController();
+        controller.setId(torneo.getId().getValue());
         controller.setLabel(torneo.getNombre().getValue());
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root, 800, 500);
