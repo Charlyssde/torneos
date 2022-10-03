@@ -5,6 +5,7 @@
 package com.cc.torneos.db.controller;
 
 import com.cc.torneos.db.ConnectionService;
+import com.cc.torneos.modelos.Equipo;
 import com.cc.torneos.modelos.Torneo;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -34,6 +35,22 @@ public class TorneoController {
                     
         }
         return result;
+    }
+    
+    public static Torneo getTorneo(Long id) throws SQLException{
+        
+        connectionService = ConnectionService.getInstance();
+        Connection conn = connectionService.getConnection();
+
+        PreparedStatement pst = conn.prepareStatement("SELECT * FROM torneo WHERE id = ? ");
+        pst.setLong(1, id);
+        
+        ResultSet rs = pst.executeQuery();
+        Torneo nuevo = null;
+        while (rs.next()){
+            nuevo = new Torneo(rs.getString("nombre"), rs.getLong("id"));
+        }
+        return nuevo;
     }
     
     public static void save(String name) throws SQLException{

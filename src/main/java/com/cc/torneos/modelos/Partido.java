@@ -22,22 +22,25 @@ public class Partido {
     private LongProperty goles_local;
     private LongProperty goles_visitante;
     private LongProperty estatus;
+    private LongProperty torneo_id;
 
-    public Partido(Long id, Equipo local, Equipo visitante, Long goles_local, Long goles_visitante, Long estatus) {
+    public Partido(Long id, Equipo local, Equipo visitante, Long goles_local, Long goles_visitante, Long estatus, Long torneo_id) {
         this.id = new SimpleLongProperty(id);
         this.local = new SimpleObjectProperty<>(local);
         this.visitante = new SimpleObjectProperty<>(visitante);
         this.goles_local = new SimpleLongProperty(goles_local);
         this.goles_visitante = new SimpleLongProperty(goles_visitante);
         this.estatus = new SimpleLongProperty(estatus);
+        this.torneo_id = new SimpleLongProperty(torneo_id);
     }
 
-    public Partido(Equipo local, Equipo visita){
+    public Partido(Equipo local, Equipo visita, Long torneo_id){
         this.local = new SimpleObjectProperty<>(local);
         this.visitante = new SimpleObjectProperty<>(visita);
         this.goles_local = new SimpleLongProperty(0L);
         this.goles_visitante = new SimpleLongProperty(0L);
         this.estatus = new SimpleLongProperty(0L);
+        this.torneo_id = new SimpleLongProperty(torneo_id);
     }
     
     public LongProperty getId() {
@@ -86,6 +89,14 @@ public class Partido {
 
     public void setEstatus(Long estatus) {
         this.estatus.set(estatus);
+    }
+
+    public LongProperty getTorneo_id() {
+        return torneo_id;
+    }
+
+    public void setTorneo_id(Long torneo_id) {
+        this.torneo_id.set(torneo_id);
     }
     
     

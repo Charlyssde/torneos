@@ -37,25 +37,65 @@ public class RolesController implements Initializable {
     private Long torneo_id;
     private List<Partido> partidos;
     private List<Equipo> equipos;
+    private List<Partido> nuevos;
     
     @FXML
     private ListView list_partidos;
     @FXML
     private Button btn_nuevo;
+    @FXML
+    private Button btn_registrar;
+    @FXML
+    private Button btn_guardar;
 
+    public RolesController(){
+        equipos = new ArrayList<>();
+        partidos = new ArrayList<>();
+        nuevos = new ArrayList<>();
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
+        try {
+            equipos = EquiposController.getAllEquipos(torneo_id);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
         btn_nuevo.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent t) {
-
                 try {
                     handleNewRole();
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
 
+            }
+        });
+        btn_guardar.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent t) {
+                System.out.println("Clikc");
+                if(!nuevos.isEmpty()){
+                    System.out.println("Non empty");
+                    try {
+                        PartidosController.saveAllPartidos(nuevos);
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+                
+            }
+        });
+        
+        btn_registrar.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent t) {
+                
+                
+                
             }
         });
         
@@ -67,7 +107,7 @@ public class RolesController implements Initializable {
             list_partidos.setCellFactory(new Callback<ListView<String>, ListCell<Partido>>() {
                 @Override
                 public ListCell<Partido> call(ListView<String> param) {
-                    return new RolCell();
+                    return new RolCell(equipos);
                 }
             });
         } catch (SQLException ex) {
@@ -76,19 +116,18 @@ public class RolesController implements Initializable {
     }
 
     private void handleNewRole() throws SQLException {
-        
-        equipos = EquiposController.getAllEquipos(torneo_id);
-        List<Partido> nuevos = new ArrayList<>();
-        
+        nuevos = new ArrayList<>();
         for(Equipo local : equipos){
             for(Equipo visita : equipos){
                 System.out.println("Visita-> " + visita.getNombre().getValue());
                 System.out.println("Local-> " + local.getNombre().getValue());
                 if(!visita.getId().getValue().equals(local.getId().getValue())){
                     System.out.println("Es diferente");
-                    if(!partidoExists(visita, local) && !partidoRol(nuevos, visita, local)){
-                        System.out.println("No existen");
-                        nuevos.add(new Partido(local, visita));
+                    if(!partidoExists(visita, local)){
+                        if(!partidoRol(nuevos, visita, local)){
+                            System.out.println("No existen");
+                            nuevos.add(new Partido(local, visita, torneo_id));
+                        }
                     }
                     
                 }
@@ -98,10 +137,10 @@ public class RolesController implements Initializable {
         list_partidos.setCellFactory(new Callback<ListView<String>, ListCell<Partido>>() {
                 @Override
                 public ListCell<Partido> call(ListView<String> param) {
-                    return new RolCell();
+                    return new RolCell(equipos);
                 }
             });
-        
+        btn_guardar.setDisable(nuevos.isEmpty());
     }
 
     public void setLabel(String text) {

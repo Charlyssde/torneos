@@ -37,6 +37,22 @@ public class EquiposController {
         }
         return result;
     }
+    
+    public static Equipo getEquipo(Long id) throws SQLException{
+        
+        connectionService = ConnectionService.getInstance();
+        Connection conn = connectionService.getConnection();
+
+        PreparedStatement pst = conn.prepareStatement("SELECT * FROM equipo WHERE id = ? ");
+        pst.setLong(1, id);
+        
+        ResultSet rs = pst.executeQuery();
+        Equipo nuevo = null;
+        while (rs.next()){
+            nuevo = new Equipo(rs.getString("nombre"), rs.getLong("id"), rs.getLong("torneo_id"));
+        }
+        return nuevo;
+    }
 
     public static void save(String name, Long torneo_id) throws SQLException {
         connectionService = ConnectionService.getInstance();

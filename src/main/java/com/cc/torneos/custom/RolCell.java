@@ -1,7 +1,12 @@
 package com.cc.torneos.custom;
 
+import com.cc.torneos.db.controller.EquiposController;
 import com.cc.torneos.modelos.Equipo;
 import com.cc.torneos.modelos.Partido;
+import java.util.ArrayList;
+import java.util.List;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,28 +27,33 @@ public class RolCell extends ListCell<Partido> {
     TextField label = new TextField("");
     TextField label2 = new TextField("");
     Pane pane = new Pane();
-    ChoiceBox<String> button = new ChoiceBox<>();
-    ChoiceBox<String> button2 = new ChoiceBox<>();
+    ChoiceBox<String> local = new ChoiceBox<>();
+    ChoiceBox<String> visitante = new ChoiceBox<>();
+    List<Equipo> data;
     
-    public RolCell(){
+    public RolCell(List<Equipo> data){
         super();
             label.setMaxWidth(30);
             label.setMinWidth(40);
             label2.setMaxWidth(30);
             label2.setMinWidth(40);
-            button.setMaxWidth(100);
-            button.setMinWidth(100);
-            button2.setMaxWidth(100);
-            button2.setMinWidth(100);
+            local.setMaxWidth(100);
+            local.setMinWidth(100);
+            visitante.setMaxWidth(100);
+            visitante.setMinWidth(100);
             
-            ObservableList<String> list = FXCollections.observableArrayList(
-                "Equipo 1", "Equipo 2", "Equipo 3", "Equipo 4");
-            button.setItems(list);
-            button2.setItems(list);
-            button.setValue("Equipo 1");
-            button2.setValue("Equipo 2");
+            this.data = data;
             
-            hbox.getChildren().addAll(label, button, pane, button2, label2);
+            List<String> names = new ArrayList<>();
+            for(Equipo d : data){
+                names.add(d.getNombre().getValue());
+            }
+            
+            ObservableList<String> list = FXCollections.observableArrayList(names);
+            local.setItems(list);
+            visitante.setItems(list);
+            
+            hbox.getChildren().addAll(label, local, pane, visitante, label2);
             //hbox.getChildren().addAll(button, pane, button2);
             HBox.setHgrow(pane, Priority.ALWAYS);
     }
@@ -55,8 +65,20 @@ public class RolCell extends ListCell<Partido> {
             if (empty) {
                 setGraphic(null);
             } else {
-                label.setText(item.getLocal().getValue().getNombre().getValue());
-                label2.setText(item.getVisitante().getValue().getNombre().getValue());
+                local.setValue(item.getLocal().getValue().getNombre().getValue());
+                local.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Number> ov, Number t, Number t1) {
+                        item.setLocal(data.get((Integer)t1));
+                    }
+                });
+                visitante.setValue(item.getVisitante().getValue().getNombre().getValue());
+                visitante.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Number> ov, Number t, Number t1) {
+                        item.setVisitante(data.get((Integer)t1));
+                    }
+                });
                 setGraphic(hbox);
             }
         }

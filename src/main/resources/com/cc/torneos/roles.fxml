@@ -43,7 +43,8 @@
             <Pane prefHeight="70.0" prefWidth="800.0">
                <children>
                   <Button fx:id="btn_nuevo" layoutX="50.0" layoutY="23.0" mnemonicParsing="false" text="Generar nuevo rol" />
-                  <Button layoutX="652.0" layoutY="23.0" mnemonicParsing="false" text="Registrar resultados" />
+                  <Button fx:id="btn_registrar" layoutX="652.0" layoutY="23.0" mnemonicParsing="false" text="Registrar resultados" />
+                  <Button fx:id="btn_guardar" disable="true" layoutX="374.0" layoutY="48.0" mnemonicParsing="false" text="Guardar" />
                </children>
             </Pane>
             <Pane layoutY="70.0" prefHeight="350.0" prefWidth="800.0">
