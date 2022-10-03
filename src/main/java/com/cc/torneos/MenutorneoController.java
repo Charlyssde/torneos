@@ -30,6 +30,8 @@ public class MenutorneoController implements Initializable {
     private Stage stage;
     private Scene scene;
     private Parent root;
+    
+    private Long torneo_id;
 
     @FXML
     private Button btn_equipos;
@@ -49,11 +51,12 @@ public class MenutorneoController implements Initializable {
 
         btn_equipos.setOnAction((ActionEvent t) -> {
             try {
-
+                SecondaryController controller = new SecondaryController();
+                controller.setTorneo_id(torneo_id);
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
+                loader.setController(controller);
                 root = loader.load();
-                SecondaryController controller = loader.getController();
-                controller.setLabel(lbl_torneo.getText());
+                ((SecondaryController)loader.getController()).setLabel(lbl_torneo.getText());
                 stage = (Stage) ((Node) t.getSource()).getScene().getWindow();
                 scene = new Scene(root, 800, 500);
                 stage.setScene(scene);
@@ -117,5 +120,8 @@ public class MenutorneoController implements Initializable {
 
     public void setLabel(String text) {
         this.lbl_torneo.setText(text);
+    }
+    public void setId (Long id){
+        this.torneo_id = id;
     }
 }

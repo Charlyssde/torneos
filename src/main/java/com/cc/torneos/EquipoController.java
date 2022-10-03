@@ -144,13 +144,6 @@ public class EquipoController implements Initializable {
 
     private void populateTable() {
         
-        data.add(new Jugador("Jugador 1"));
-        data.add(new Jugador("Jugador 2"));
-        data.add(new Jugador("Jugador 3"));
-        data.add(new Jugador("Jugador 4"));
-        data.add(new Jugador("Jugador 5"));
-        data.add(new Jugador("Jugador 6"));
-        
         tbl_jugadores.setItems(data);
         
     }

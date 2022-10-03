@@ -1,10 +1,15 @@
 package com.cc.torneos;
 
+import com.cc.torneos.EquipoController;
+import com.cc.torneos.db.controller.EquiposController;
 import com.cc.torneos.modelos.Equipo;
 import com.cc.torneos.modelos.Torneo;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -45,8 +50,10 @@ public class SecondaryController implements Initializable {
     private Button btn_nuevo;
     @FXML
     private Label link_torneos;
-    @FXML private Label lbl_torneo;
+    @FXML
+    private Label lbl_torneo;
 
+    private Long torneo_id;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
@@ -54,6 +61,7 @@ public class SecondaryController implements Initializable {
             @Override
             public void handle(ActionEvent t) {
                 DialogNewElementController dialog = new DialogNewElementController(stage, "torneo");
+                dialog.setTorneo(torneo_id);
                 dialog.showAndWait();
             }
         });
@@ -132,20 +140,21 @@ public class SecondaryController implements Initializable {
     }
 
     private void populateTable() {
-
-        data.add(new Equipo("Equipo 1"));
-        data.add(new Equipo("Equipo 2"));
-        data.add(new Equipo("Equipo 3"));
-        data.add(new Equipo("Equipo 4"));
-        data.add(new Equipo("Equipo 5"));
-        data.add(new Equipo("Equipo 6"));
-
-        tbl_equipos.setItems(data);
+        try {
+            data.addAll(EquiposController.getAllEquipos(this.torneo_id));
+            tbl_equipos.setItems(data);
+        } catch (SQLException ex) {
+            Logger.getLogger(SecondaryController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
-    public void setLabel(String text){
+    public void setLabel(String text) {
         this.lbl_torneo.setText(text);
+    }
+
+    public void setTorneo_id(Long torneo_id) {
+        this.torneo_id = torneo_id;
     }
     
 }
