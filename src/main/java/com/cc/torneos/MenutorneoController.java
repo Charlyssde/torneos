@@ -68,11 +68,12 @@ public class MenutorneoController implements Initializable {
         });
         btn_roles.setOnAction((ActionEvent t) -> {
             try {
-
+                RolesController controller = new RolesController();
+                controller.setId(torneo_id);
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("roles.fxml"));
+                loader.setController(controller);
                 root = loader.load();
-                RolesController controller = loader.getController();
-                controller.setLabel(lbl_torneo.getText());
+                ((RolesController)loader.getController()).setLabel(lbl_torneo.getText());
                 stage = (Stage) ((Node) t.getSource()).getScene().getWindow();
                 scene = new Scene(root, 800, 500);
                 stage.setScene(scene);

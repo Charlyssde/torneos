@@ -32,7 +32,13 @@ public class Partido {
         this.estatus = new SimpleLongProperty(estatus);
     }
 
-    
+    public Partido(Equipo local, Equipo visita){
+        this.local = new SimpleObjectProperty<>(local);
+        this.visitante = new SimpleObjectProperty<>(visita);
+        this.goles_local = new SimpleLongProperty(0L);
+        this.goles_visitante = new SimpleLongProperty(0L);
+        this.estatus = new SimpleLongProperty(0L);
+    }
     
     public LongProperty getId() {
         return id;

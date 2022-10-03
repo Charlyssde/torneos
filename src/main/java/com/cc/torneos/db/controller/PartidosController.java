@@ -22,14 +22,15 @@ public class PartidosController {
     
     private static ConnectionService connectionService;
     
-    public static List<Partido> getAllPartidos(boolean estatus) throws SQLException{
+    public static List<Partido> getAllPartidos(boolean estatus, Long id) throws SQLException{
         List<Partido> result = new ArrayList<>();
         
         connectionService = ConnectionService.getInstance();
         Connection conn = connectionService.getConnection();
 
-        PreparedStatement pst = conn.prepareStatement("SELECT * FROM partido WHERE estatus = ? ");
+        PreparedStatement pst = conn.prepareStatement("SELECT * FROM partido WHERE estatus = ? AND torneo_id = ?");
         pst.setLong(1, estatus ? 0L : 1L);
+        pst.setLong(2, id);
         ResultSet rs = pst.executeQuery();
 
         while (rs.next()) {

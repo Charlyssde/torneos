@@ -1,5 +1,7 @@
 package com.cc.torneos.custom;
 
+import com.cc.torneos.modelos.Equipo;
+import com.cc.torneos.modelos.Partido;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,7 +16,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 
 
-public class RolCell extends ListCell<String> {
+public class RolCell extends ListCell<Partido> {
 
     HBox hbox = new HBox();
     TextField label = new TextField("");
@@ -47,14 +49,14 @@ public class RolCell extends ListCell<String> {
     }
     
     @Override
-        protected void updateItem(String item, boolean empty) {
+        protected void updateItem(Partido item, boolean empty) {
             super.updateItem(item, empty);
             setText(null);  // No text in label of super class
             if (empty) {
                 setGraphic(null);
             } else {
-                label.setText("0");
-                label2.setText("0");
+                label.setText(item.getLocal().getValue().getNombre().getValue());
+                label2.setText(item.getVisitante().getValue().getNombre().getValue());
                 setGraphic(hbox);
             }
         }

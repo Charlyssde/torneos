@@ -60,9 +60,10 @@ public class SecondaryController implements Initializable {
         btn_nuevo.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent t) {
-                DialogNewElementController dialog = new DialogNewElementController(stage, "torneo");
+                DialogNewElementController dialog = new DialogNewElementController(stage, "equipo");
                 dialog.setTorneo(torneo_id);
                 dialog.showAndWait();
+                populateTable();
             }
         });
 

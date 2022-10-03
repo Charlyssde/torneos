@@ -42,7 +42,7 @@ public class EquiposController {
         connectionService = ConnectionService.getInstance();
         Connection conn = connectionService.getConnection();
 
-        PreparedStatement pst = conn.prepareStatement("INSERT INTO torneos (nombre, equipo_id) values (?, ?)");
+        PreparedStatement pst = conn.prepareStatement("INSERT INTO equipo (nombre, torneo_id) values (?, ?)");
         pst.setString(1, name);
         pst.setLong(2, torneo_id);
 
