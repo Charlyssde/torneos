@@ -66,7 +66,14 @@ public class MenutorneoController implements Initializable {
         btn_roles.setOnAction((ActionEvent t) -> {
             try {
 
-                handleMenuSelect("roles", t);
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("roles.fxml"));
+                root = loader.load();
+                RolesController controller = loader.getController();
+                controller.setLabel(lbl_torneo.getText());
+                stage = (Stage) ((Node) t.getSource()).getScene().getWindow();
+                scene = new Scene(root, 800, 500);
+                stage.setScene(scene);
+                stage.show();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
